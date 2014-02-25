@@ -19,7 +19,7 @@ public class CensoGetminiprettycolumns implements GenericOperation {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try { 
-            String data = "{\"data\": [ \"nombreApellidos\", \"domicilio\", \"localidad\", \"dni\", \"nacimiento\", \"historial\", \"edad\"]}";
+            String data = "{\"data\": [ \"apellido1\", \"apellido2\", \"nombre\", \"domicilio\", \"patio\", \"puerta\", \"localidad\", \"codpostal\", \"dni\", \"nacimiento\", \"edad\"]}";
             return data;
         } catch (Exception e) {
             throw new ServletException("CensoGetpagesJson: View Error: " + e.getMessage());

@@ -128,8 +128,11 @@ var control_recompensa_list = function(path) {
             $(prefijo_div + "#filter").empty().append(view.getLoading()).html(view.getFilterInfo(filter, filteroperator, filtervalue));
 
             //asignación eventos de la botonera de cada línea del listado principal
-
-
+            
+            if (callback) {
+                $(prefijo_div + '.btn.btn-mini.action01').unbind('click');
+                $(prefijo_div + '.btn.btn-mini.action01').click(callback);
+            }
             $(prefijo_div + '.btn.btn-mini.action05').unbind('click');
             $(prefijo_div + '.btn.btn-mini.action05').click(function() {
                 cargaRecompensa($(this).attr('id'));

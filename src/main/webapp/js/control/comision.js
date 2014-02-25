@@ -129,6 +129,10 @@ var control_comision_list = function(path) {
 
             //asignación eventos de la botonera de cada línea del listado principal
 
+            if (callback) {
+                $(prefijo_div + '.btn.btn-mini.action01').unbind('click');
+                $(prefijo_div + '.btn.btn-mini.action01').click(callback);
+            }
 
             $(prefijo_div + '.btn.btn-mini.action05').unbind('click');
             $(prefijo_div + '.btn.btn-mini.action05').click(function() {

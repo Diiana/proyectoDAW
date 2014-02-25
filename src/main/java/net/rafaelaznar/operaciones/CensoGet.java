@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.rafaelaznar.bean.CensoBean;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.rafaelaznar.dao.CensoDao;
 import net.rafaelaznar.helper.Conexion;
 
@@ -32,7 +33,10 @@ public class CensoGet implements GenericOperation {
                 CensoBean oCenso = new CensoBean();
                 oCenso.setId(Integer.parseInt(request.getParameter("id")));
                 oCensoDAO.get(oCenso);
-                data = new Gson().toJson(oCenso);
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.setDateFormat("dd/MM/yyyy");
+                Gson gson = gsonBuilder.create();
+                data = gson.toJson(oCenso);     
             }
             return data;
         } catch (Exception e) {
