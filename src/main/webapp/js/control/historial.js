@@ -1,15 +1,17 @@
 /* 
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var control_censo_list = function(path) {
+
+
+var control_historial_list = function(path) {
     //contexto privado
 
-    var prefijo_div = "#censo_list ";
+    var prefijo_div = "#historial_list ";
 
     function cargaBotoneraMantenimiento() {
         var botonera = [
-            {"class": "btn btn-mini action01", "icon": "icon-eye-open", "text": ""},
             {"class": "btn btn-mini action03", "icon": "icon-pencil", "text": ""},
             {"class": "btn btn-mini action04", "icon": "icon-remove", "text": ""}
         ];
@@ -69,20 +71,37 @@ var control_censo_list = function(path) {
             $(prefijo_div + '#id').val('0').attr("disabled", true);
             $(prefijo_div + '#codigo').focus();
         }
-        $('#id_comision').empty().append(view.getComboBox("comision"));
+
+        $('#id_cargo').empty().append(view.getComboBox("cargo"));
         $('#id_recompensa').empty().append(view.getComboBox("recompensa"));
 
-        //clave ajena comision
-        cargaClaveAjena('#id_comision', '#id_comision_desc', 'comision')
+        //clave ajena cargo
+        cargaClaveAjena('#id_censo', '#id_censo_desc', 'censo')
 
-        $(prefijo_div + '#id_comision_button').unbind('click');
-        $(prefijo_div + '#id_comision_button').click(function() {
-            loadForeign('comision', '#modal02', control_comision_list, callbackSearchComision);
+        $(prefijo_div + '#id_censo_button').unbind('click');
+        $(prefijo_div + '#id_censo_button').click(function() {
+            loadForeign('censo', '#modal02', control_censo_list, callbackSearchComision);
             function callbackSearchComision(id) {
                 $(prefijo_div + '#modal02').modal('hide');
                 $(prefijo_div + '#modal02').data('modal', null);
-                $(prefijo_div + '#id_comision').val($(this).attr('id'));
-                cargaClaveAjena('#id_comision', '#id_comision_desc', 'comision');
+                $(prefijo_div + '#id_censo').val($(this).attr('id'));
+                cargaClaveAjena('#id_censo', '#id_censo_desc', 'censo');
+                return false;
+            }
+            return false;
+        });
+
+        //clave ajena cargo
+        cargaClaveAjena('#id_cargo', '#id_cargo_desc', 'cargo')
+
+        $(prefijo_div + '#id_cargo_button').unbind('click');
+        $(prefijo_div + '#id_cargo_button').click(function() {
+            loadForeign('cargo', '#modal02', control_cargo_list, callbackSearchComision);
+            function callbackSearchComision(id) {
+                $(prefijo_div + '#modal02').modal('hide');
+                $(prefijo_div + '#modal02').data('modal', null);
+                $(prefijo_div + '#id_cargo').val($(this).attr('id'));
+                cargaClaveAjena('#id_cargo', '#id_cargo_desc', 'cargo');
                 return false;
             }
             return false;
@@ -90,6 +109,7 @@ var control_censo_list = function(path) {
 
         //clave ajena recompensa
         cargaClaveAjena('#id_recompensa', '#id_recompensa_desc', 'recompensa')
+
         $(prefijo_div + '#id_recompensa_button').unbind('click');
         $(prefijo_div + '#id_recompensa_button').click(function() {
             loadForeign('recompensa', '#modal02', control_recompensa_list, callbackSearchRecompensa);
@@ -106,7 +126,7 @@ var control_censo_list = function(path) {
         $(prefijo_div + '#submitForm').unbind('click');
         $(prefijo_div + '#submitForm').click(function(event) {
             //validaciones...
-            enviarDatosUpdateForm(view,prefijo_div);
+            enviarDatosUpdateForm(view, prefijo_div);
             return false;
         });
     }
@@ -184,10 +204,6 @@ var control_censo_list = function(path) {
                 $(prefijo_div + '.btn.btn-mini.action01').unbind('click');
                 $(prefijo_div + '.btn.btn-mini.action01').click(callback);
             } else {
-                $(prefijo_div + '.btn.btn-mini.action01').unbind('click');
-                $(prefijo_div + '.btn.btn-mini.action01').click(function() {
-                    loadModalView(view, '#modal01', $(this).attr('id'));
-                });
 
                 $(prefijo_div + '.btn.btn-mini.action03').unbind('click');
                 $(prefijo_div + '.btn.btn-mini.action03').click(function() {

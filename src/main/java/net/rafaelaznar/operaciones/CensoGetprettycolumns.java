@@ -19,7 +19,7 @@ public class CensoGetprettycolumns implements GenericOperation {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try { 
-            String data = "{\"data\": [\"id\", \"comision\", \"apellido1\", \"apellido2\", \"nombre\", \"domicilio\", \"patio\", \"puerta\", \"localidad\", \"codpostal\", \"dni\", \"nacimiento\", \"alta\", \"telefono\", \"recompensa\", \"añoConcesion\", \"edad\"]}";
+            String data = "{\"data\": [\"id\", \"Comision\", \"1 Apellido\", \"2º Apellido\", \"Nombre\", \"Domicilio\", \"Patio\", \"Puerta\", \"Localidad\", \"Cod.Postal\", \"Dni\", \"Nacimiento\", \"Alta\", \"Telefono\", \"Recompensa\", \"AñoConcesion\", \"Edad\"]}";
             return data;
         } catch (Exception e) {
             throw new ServletException("CensoGetpagesJson: View Error: " + e.getMessage());

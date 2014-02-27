@@ -110,6 +110,9 @@
         <script src="js/control/censo.js" charset="UTF-8"></script>
         <script src="js/control/comision.js" charset="UTF-8"></script>
         <script src="js/control/recompensa.js" charset="UTF-8"></script>
+        <script src="js/control/cargo.js" charset="UTF-8"></script>
+        <script src="js/control/historial.js" charset="UTF-8"></script>
+        
         <script>
 
             $(document).ready(function() {
@@ -157,6 +160,33 @@
                     recompensaControl.inicia(recompensaView, 1, null, null, 10, null, null, null, null);
                     return false;
                 });
+                
+                $('#lnkCargo').unbind('click');
+                $('#lnkCargo').click(function() {
+                    var cargo = objeto('cargo', '<%=request.getContextPath()%>');
+                    var cargoView = vista(cargo, '<%=request.getContextPath()%>');
+
+                    $('#indexContenidoJsp').empty();
+                    $('#indexContenido').empty().append(cargoView.getEmptyList());
+
+                    var cargoControl = control_cargo_list('<%=request.getContextPath()%>');
+                    cargoControl.inicia(cargoView, 1, null, null, 10, null, null, null, null);
+                    return false;
+                });
+                
+                $('#lnkHistorial').unbind('click');
+                $('#lnkHistorial').click(function() {
+                    var historial = objeto('historial', '<%=request.getContextPath()%>');
+                    var historialView = vista(historial, '<%=request.getContextPath()%>');
+
+                    $('#indexContenidoJsp').empty();
+                    $('#indexContenido').empty().append(historialView.getEmptyList());
+
+                    var historialControl = control_historial_list('<%=request.getContextPath()%>');
+                    historialControl.inicia(historialView, 1, null, null, 10, null, null, null, null);
+                    return false;
+                });
+                
             });
 
         </script>

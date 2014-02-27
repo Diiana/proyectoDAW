@@ -33,10 +33,6 @@ var objeto = function(clase, ContextPath) {
             });
             return fieldNames;
         },
-                
-                
-                
-                
         //COLUMNAS MINI                      
 
         getMiniPrettyFieldNames: function() {
@@ -139,7 +135,50 @@ var objeto = function(clase, ContextPath) {
                 feedback = data;
             });
             return feedback;
-        }
+        },
+        getOtherTableRegisters: function(tabla, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue) {
+            if (filter) {
+                filterParams = "&filter=" + filter + "&filteroperator=" + filteroperator + "&filtervalue=" + filtervalue;
+            } else {
+                filterParams = "";
+            }
+            if (systemfilter) {
+                systemfilterParams = "&systemfilter=" + systemfilter + "&systemfilteroperator=" + systemfilteroperator + "&systemfiltervalue=" + systemfiltervalue;
+            } else {
+                systemfilterParams = "";
+            }
+            $.when(ajaxCallSync(ContextPath + '/json?ob=' + tabla + '&op=getregisters' + filterParams + systemfilterParams, 'GET', '')).done(function(data) {
+                regs = data['data'];
+            });
+            return regs;
+        },
+        getOtherTablePage: function(tabla, pagina, order, ordervalue, rpp, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue) {
+            if (order) {
+                orderParams = '&order=' + order + '&ordervalue=' + ordervalue;
+            } else {
+                orderParams = "";
+            }
+            if (filter) {
+                filterParams = "&filter=" + filter + "&filteroperator=" + filteroperator + "&filtervalue=" + filtervalue;
+            } else {
+                filterParams = "";
+            }
+            if (systemfilter) {
+                systemfilterParams = "&systemfilter=" + systemfilter + "&systemfilteroperator=" + systemfilteroperator + "&systemfiltervalue=" + systemfiltervalue;
+            } else {
+                systemfilterParams = "";
+            }
+            $.when(ajaxCallSync(ContextPath + '/json?ob=' + tabla + '&op=getpage' + filterParams + '&rpp=' + rpp + orderParams + '&page=' + pagina + systemfilterParams, 'GET', '')).done(function(data) {
+                pagina_objs = data;
+            });
+            return pagina_objs;
+        },
+        getOtherTableFieldNames: function(tabla) {
+            $.when(ajaxCallSync(ContextPath + '/json?ob=' + tabla + '&op=getcolumns', 'GET', '')).done(function(data) {
+                fieldNames = data['data'];
+            });
+            return fieldNames;
+        },
     };
 };
 //VISTA
@@ -237,6 +276,58 @@ var vista = function(objeto, ContextPath) {
             tabla += "</table>";
             return tabla;
         },
+        getAllTable: function(pag, order, ordervalue, rpp, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue, botonera) {
+            var tabla = "<table class=\"table table table-striped table-condensed\">";
+            if (objeto.getPrettyFieldNamesAcciones() != null) {
+                tabla += '<tr>';
+                $.each(objeto.getPrettyFieldNamesAcciones(), function(index, value) {
+                    tabla += '<th>' + value;
+                    if (value == "nombreApellidos" || value == "añoConcesion" || value == "edad") {
+                        tabla += '<a class="orderAsc' + index + '" href="#"><i class="icon-arrow-up"></i></a>';
+                        tabla += '<a class="orderDesc' + index + '" href="#"><i class="icon-arrow-down"></i></a>';
+                    }
+                    tabla += '</th>';
+                });
+                tabla += '</tr>';
+            }
+            var rpp = objeto.getRegisters(filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue);
+            page = objeto.getPage(pag, order, ordervalue, rpp, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue)['list'];
+            $.each(page, function(index, value) {
+                tabla += '<tr>';
+
+                $.each(objeto.getFieldNames(), function(index, valor) {
+                    if (/id_/.test(valor)) {
+                        $.when(ajaxCallSync(ContextPath + '/json?ob=' + valor.split("_")[1] + '&op=get&id=' + value[valor], 'GET', '')).done(function(data) {
+
+                            contador = 0;
+                            add_tabla = "";
+                            for (key in data) {
+                                if (contador == 0)
+                                    add_tabla = '<td>id=' + data[key] + '(no existe)</td>';
+                                if (contador == 1)
+                                    add_tabla = '<td>' + data[key] + '</td>';
+                                contador++;
+                            }
+                            if (contador == 0) {
+                                add_tabla = '<td>' + value[valor] + ' #error</td>';
+                            }
+                            tabla += add_tabla;
+                        });
+                    } else {
+                        tabla += '<td>' + value[valor] + '</td>';
+                    }
+                });
+                tabla += '<td><div class="btn-toolbar"><div class="btn-group">';
+
+                $.each(botonera, function(indice, valor) {
+                    tabla += '<a class="' + valor.class + '" id=' + value.id + ' href="#"><i class="' + valor.icon + '"></i> ' + valor.text + '</a>';
+                });
+                tabla += '</div></div></td>';
+                tabla += '</tr>';
+            });
+            tabla += "</table>";
+            return tabla;
+        },
         //miniTable tiene menos columnas
         getMiniPageTable: function(pag, order, ordervalue, rpp, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue, botonera) {
             var tabla = "<table class=\"table table table-striped table-condensed\">";
@@ -287,6 +378,74 @@ var vista = function(objeto, ContextPath) {
                 tabla += '</tr>';
             });
             tabla += "</table>";
+            return tabla;
+        },
+        getComboBox: function(table, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue) {
+            var tabla = "";
+            var tipo = "";
+            var nombre = "";
+            var order = null;
+            var ordervalue = null;
+            var pag = 1;
+            var rpp = this.getObject().getOtherTableRegisters(table, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue);
+            page = objeto.getOtherTablePage(table, pag, order, ordervalue, rpp, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue)['list'];
+            if (page != 0) {
+                $.each(page, function(index, value) {
+                    tabla += '<option ';
+                    nombre = "";
+                    tipo = "";
+                    $.each(objeto.getOtherTableFieldNames(table), function(index, valor) {
+                        if (valor == "comision") {
+                            switch (value[valor]) {
+                                case true:
+                                    nombre += '<i class="icon-ok"></i>';
+                                    break;
+                                case false:
+                                    nombre += '<i class="icon-remove"></i>';
+                                    break;
+                                default:
+                                    nombre += '' + value[valor] + '';
+                            }
+                        } else if (valor == "recompensa") {
+                            switch (value[valor]) {
+                                case true:
+                                    nombre += '<i class="icon-ok"></i>';
+                                    break;
+                                case false:
+                                    nombre += '<i class="icon-remove"></i>';
+                                    break;
+                                default:
+                                    nombre += '' + value[valor] + '';
+                            }
+                        } else if (valor == "cargo") {
+                            switch (value[valor]) {
+                                case true:
+                                    nombre += '<i class="icon-ok"></i>';
+                                    break;
+                                case false:
+                                    nombre += '<i class="icon-remove"></i>';
+                                    break;
+                                default:
+                                    nombre += '' + value[valor] + '';
+                            }
+                        } else if (valor == "id") {
+                            switch (value[valor]) {
+                                case true:
+                                    tipo += 'value="<i class="icon-ok"></i>">';
+                                    break;
+                                case false:
+                                    tipo += 'value="<i class="icon-remove"></i>">';
+                                    break;
+                                default:
+                                    tipo += 'value="' + value[valor] + '">';
+                            }
+                        }
+                    });
+                    tabla += tipo + nombre + '</option>';
+                });
+            } else {
+                tabla += '<option value="0">Tabla Vacia</option>';
+            }
             return tabla;
         },
         getObjectTable: function(id) {

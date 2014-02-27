@@ -5,26 +5,33 @@
  */
 package net.rafaelaznar.operaciones;
 
-import java.io.UnsupportedEncodingException;
+import com.google.gson.Gson;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.rafaelaznar.dao.HistorialDao;
 
-import net.rafaelaznar.data.MysqlData;
+import net.rafaelaznar.helper.Conexion;
 
 /**
  *
  * @author Diana
  */
-public class ComisionGetprettycolumns implements GenericOperation {
+public class HistorialGetcolumns implements GenericOperation {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ArrayList<String> alColumns = null;
         try {
-            String data = "{\"data\": [\"id\", \"Comision\"]}";
+            HistorialDao oHistorialDAO = new HistorialDao(Conexion.getConection());
+            alColumns = oHistorialDAO.getColumnsNames();
+            String data = new Gson().toJson(alColumns);
+            data = "{\"data\":" + data + "}";
             return data;
         } catch (Exception e) {
-            throw new ServletException("ComisionGetpagesJson: View Error: " + e.getMessage());
+            throw new ServletException("HistorialGetcolumnsJson: View Error: " + e.getMessage());
         }
     }
+
 }

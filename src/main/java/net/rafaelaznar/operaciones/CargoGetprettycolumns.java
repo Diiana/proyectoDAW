@@ -14,15 +14,15 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Diana
  */
-public class CensoGetminiprettycolumns implements GenericOperation {
+public class CargoGetprettycolumns implements GenericOperation {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        try { 
-            String data = "{\"data\": [ \"1º Apellido\", \"2º Apellido\", \"Nombre\", \"Domicilio\", \"Patio\", \"Puerta\", \"Localidad\", \"Cod.Postal\", \"Dni\", \"Nacimiento\", \"Edad\"]}";
+        try {
+            String data = "{\"data\": [\"id\", \"Cargo\"]}";
             return data;
         } catch (Exception e) {
-            throw new ServletException("CensoGetpagesJson: View Error: " + e.getMessage());
+            throw new ServletException("CargoGetpagesJson: View Error: " + e.getMessage());
         }
     }
 }

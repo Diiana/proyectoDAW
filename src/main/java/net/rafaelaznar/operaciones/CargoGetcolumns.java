@@ -5,24 +5,33 @@
  */
 package net.rafaelaznar.operaciones;
 
+import com.google.gson.Gson;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.rafaelaznar.dao.CargoDao;
 
+import net.rafaelaznar.helper.Conexion;
 
 /**
  *
  * @author Diana
  */
-public class CensoGetminiprettycolumns implements GenericOperation {
+public class CargoGetcolumns implements GenericOperation {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        try { 
-            String data = "{\"data\": [ \"1º Apellido\", \"2º Apellido\", \"Nombre\", \"Domicilio\", \"Patio\", \"Puerta\", \"Localidad\", \"Cod.Postal\", \"Dni\", \"Nacimiento\", \"Edad\"]}";
+        ArrayList<String> alColumns = null;
+        try {
+            CargoDao oCargoDAO = new CargoDao(Conexion.getConection());
+            alColumns = oCargoDAO.getColumnsNames();
+            String data = new Gson().toJson(alColumns);
+            data = "{\"data\":" + data + "}";
             return data;
         } catch (Exception e) {
-            throw new ServletException("CensoGetpagesJson: View Error: " + e.getMessage());
+            throw new ServletException("CargoGetcolumnsJson: View Error: " + e.getMessage());
         }
     }
+
 }

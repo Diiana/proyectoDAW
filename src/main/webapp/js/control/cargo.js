@@ -1,16 +1,17 @@
 /* 
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var control_censo_list = function(path) {
+
+
+var control_cargo_list = function(path) {
     //contexto privado
 
-    var prefijo_div = "#censo_list ";
+    var prefijo_div = "#cargo_list ";
 
     function cargaBotoneraMantenimiento() {
         var botonera = [
-            {"class": "btn btn-mini action01", "icon": "icon-eye-open", "text": ""},
-            {"class": "btn btn-mini action03", "icon": "icon-pencil", "text": ""},
             {"class": "btn btn-mini action04", "icon": "icon-remove", "text": ""}
         ];
         return botonera;
@@ -69,40 +70,8 @@ var control_censo_list = function(path) {
             $(prefijo_div + '#id').val('0').attr("disabled", true);
             $(prefijo_div + '#codigo').focus();
         }
-        $('#id_comision').empty().append(view.getComboBox("comision"));
-        $('#id_recompensa').empty().append(view.getComboBox("recompensa"));
 
-        //clave ajena comision
-        cargaClaveAjena('#id_comision', '#id_comision_desc', 'comision')
-
-        $(prefijo_div + '#id_comision_button').unbind('click');
-        $(prefijo_div + '#id_comision_button').click(function() {
-            loadForeign('comision', '#modal02', control_comision_list, callbackSearchComision);
-            function callbackSearchComision(id) {
-                $(prefijo_div + '#modal02').modal('hide');
-                $(prefijo_div + '#modal02').data('modal', null);
-                $(prefijo_div + '#id_comision').val($(this).attr('id'));
-                cargaClaveAjena('#id_comision', '#id_comision_desc', 'comision');
-                return false;
-            }
-            return false;
-        });
-
-        //clave ajena recompensa
-        cargaClaveAjena('#id_recompensa', '#id_recompensa_desc', 'recompensa')
-        $(prefijo_div + '#id_recompensa_button').unbind('click');
-        $(prefijo_div + '#id_recompensa_button').click(function() {
-            loadForeign('recompensa', '#modal02', control_recompensa_list, callbackSearchRecompensa);
-            function callbackSearchRecompensa(id) {
-                $(prefijo_div + '#modal02').modal('hide');
-                $(prefijo_div + '#modal02').data('modal', null);
-                $(prefijo_div + '#id_recompensa').val($(this).attr('id'));
-                cargaClaveAjena('#id_recompensa', '#id_recompensa_desc', 'recompensa');
-                return false;
-            }
-            return false;
-        });
-
+      
         $(prefijo_div + '#submitForm').unbind('click');
         $(prefijo_div + '#submitForm').click(function(event) {
             //validaciones...
@@ -161,9 +130,9 @@ var control_censo_list = function(path) {
             //muestra el listado principal
 
             if (callback) {
-                $(prefijo_div + "#datos").empty().append(view.getLoading()).html(view.getPageTable(pag, order, ordervalue, rpp, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue, cargaBotoneraBuscando()));
+                $(prefijo_div + "#datos").empty().append(view.getLoading()).html(view.getAllTable(pag, order, ordervalue, rpp, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue, cargaBotoneraBuscando()));
             } else {
-                $(prefijo_div + "#datos").empty().append(view.getLoading()).html(view.getMiniPageTable(pag, order, ordervalue, rpp, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue, cargaBotoneraMantenimiento()));
+                $(prefijo_div + "#datos").empty().append(view.getLoading()).html(view.getAllTable(pag, order, ordervalue, rpp, filter, filteroperator, filtervalue, systemfilter, systemfilteroperator, systemfiltervalue, cargaBotoneraMantenimiento()));
             }
 
             //muestra la frase con el número de registros de la consulta
@@ -183,22 +152,12 @@ var control_censo_list = function(path) {
             if (callback) {
                 $(prefijo_div + '.btn.btn-mini.action01').unbind('click');
                 $(prefijo_div + '.btn.btn-mini.action01').click(callback);
-            } else {
-                $(prefijo_div + '.btn.btn-mini.action01').unbind('click');
-                $(prefijo_div + '.btn.btn-mini.action01').click(function() {
-                    loadModalView(view, '#modal01', $(this).attr('id'));
-                });
-
-                $(prefijo_div + '.btn.btn-mini.action03').unbind('click');
-                $(prefijo_div + '.btn.btn-mini.action03').click(function() {
-                    loadModalForm(view, '#modal01', $(this).attr('id'), "edit");
-                });
-
+            } 
                 $(prefijo_div + '.btn.btn-mini.action04').unbind('click');
                 $(prefijo_div + '.btn.btn-mini.action04').click(function() {
                     removeConfirmationModalForm(view, '#modal01', $(this).attr('id'));
                 });
-            }
+            
 
             //asignación de evento del enlace para quitar el orden en el listado principal
 

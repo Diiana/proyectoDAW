@@ -1,27 +1,29 @@
 <%-- 
-    Document   : list.jsp
+    Document   : list
+    Created on : 27-feb-2014, 19:36:44
     Author     : Diana
 --%>
+
 <%@page import="net.rafaelaznar.helper.Conexion"%>
-<%@page import="net.rafaelaznar.dao.CensoDao"%>
+<%@page import="net.rafaelaznar.dao.HistorialDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Iterator"%>
 <%
-    CensoDao oCensoDao = new CensoDao(Conexion.getConection());
-    ArrayList<String> alColumnsNames = (ArrayList<String>) oCensoDao.getColumnsNames();
+    HistorialDao oHistorialDao = new HistorialDao(Conexion.getConection());
+    ArrayList<String> alColumnsNames = (ArrayList<String>) oHistorialDao.getColumnsNames();
     Iterator<String> oIterador = alColumnsNames.listIterator();
-    String strNombreMantenimiento = "censo";
+    String strNombreMantenimiento = "historial";
 %>
 <div id="<%=strNombreMantenimiento%>_list">
     <div class="span12">
-        <h2>Censo Fallero</h2>
+        <h2>Historial Fallero</h2>
         
         <div class="row-fluid">
             <div class="span8">       
                 <div id="pagination"></div>                  
             </div>
             <div class="span4">
-                <button class="btn" id="crear">Alta fallero</button>
+                <button class="btn" id="crear">Nueva fila</button>
             </div>
         </div>  
         
@@ -36,10 +38,9 @@
                     <fieldset>                                                                     
                         <span>
                             <select id="selectFilter" name="filter" width="80" style="width: 100px">
-                                <option value="nombre" >Nombre</option>
-                                <option value="apellido1" >1º Apellido</option>
-                                <option value="localidad" >Localidad</option>
-                                <option value="edad" >Edad</option>                               
+                                <option value="ejercicio" >Ejercicio</option>
+                                <option value="id_cargo" >Cargo</option>
+                                <option value="id_recompensa" >Recompensa</option>
                             </select>
                         </span>
                         &nbsp igual a  &nbsp  

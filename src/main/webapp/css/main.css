@@ -16,8 +16,8 @@ body {
     margin-bottom: 5px;
 }
 .table-condensed th, .table-condensed td {
-    padding-bottom: 0px;
-    padding-top: 0px;
+   // padding-bottom: 0px;
+   // padding-top: 0px;
 }
 .table th, .table td {
     vertical-align:middle;

@@ -21,7 +21,7 @@ public class RecompensaGetprettycolumns implements GenericOperation {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
-            String data = "{\"data\": [\"id\", \"recompensa\"]}";
+            String data = "{\"data\": [\"id\", \"Recompensa\"]}";
             return data;
         } catch (Exception e) {
             throw new ServletException("RecompensaGetpagesJson: View Error: " + e.getMessage());
