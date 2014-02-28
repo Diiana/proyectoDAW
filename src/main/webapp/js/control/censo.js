@@ -356,3 +356,4 @@ var control_censo_list = function(path) {
         };
 }
 ;
+}
