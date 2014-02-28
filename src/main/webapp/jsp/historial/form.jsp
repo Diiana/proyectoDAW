@@ -15,6 +15,11 @@
         </div>
         <a class="btn btn-mini" id="id_censo_button" href="#"><i class="icon-search"></i></a>
     </div>
+    <div class="control-group">
+            <div class="controls">
+                <span id="id_censo_desc" class="alert alert-success"></span>                                       
+            </div>
+        </div> 
 
     <div class="control-group">
         <label class="control-label"  for="inputEjercicio">Ejercicio: </label>

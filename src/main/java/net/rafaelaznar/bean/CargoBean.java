@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.rafaelaznar.bean;
 
 /**
@@ -11,12 +10,13 @@ package net.rafaelaznar.bean;
  * @author Diana
  */
 public class CargoBean {
-    
+
     private Integer id = 0;
     private String cargo = "";
-    
+
     public CargoBean() {
     }
+
     public CargoBean(Integer id) {
         this.id = id;
     }
@@ -35,8 +35,6 @@ public class CargoBean {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+
     }
-    
-    
-    
 }

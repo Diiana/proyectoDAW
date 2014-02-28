@@ -80,8 +80,8 @@ var control_historial_list = function(path) {
 
         $(prefijo_div + '#id_censo_button').unbind('click');
         $(prefijo_div + '#id_censo_button').click(function() {
-            loadForeign('censo', '#modal02', control_censo_list, callbackSearchComision);
-            function callbackSearchComision(id) {
+            loadForeign('censo', '#modal02', control_censo_list, callbackSearchCenso);
+            function callbackSearchCenso(id) {
                 $(prefijo_div + '#modal02').modal('hide');
                 $(prefijo_div + '#modal02').data('modal', null);
                 $(prefijo_div + '#id_censo').val($(this).attr('id'));
@@ -123,16 +123,54 @@ var control_historial_list = function(path) {
             return false;
         });
 
+
+//Validaciones
+        $('#formulario').validate({
+            rules: {
+                id_censo: {
+                    required: true,
+                    maxlength: 255
+                },
+                ejercicio: {
+                    required: true,
+                    maxlength: 255
+                },
+                id_cargo: {
+                    required: true,
+                    maxlength: 255
+                },
+                id_recompensa: {
+                    required: true,
+                    maxlength: 255
+                },
+                falla: {
+                    required: true,
+                    maxlength: 255
+                },
+            },
+            highlight: function(element) {
+                $(element).closest('.control-group').removeClass('success').addClass('error');
+            },
+            success: function(element) {
+                element
+                        .text('').addClass('valid')
+                        .closest('.control-group').removeClass('error').addClass('success');
+            }
+        });
+
+
         $(prefijo_div + '#submitForm').unbind('click');
-        $(prefijo_div + '#submitForm').click(function(event) {
-            //validaciones...
-            enviarDatosUpdateForm(view, prefijo_div);
+        $(prefijo_div + '#submitForm').click(function() {
+            if ($('#formulario').valid()) {
+                enviarDatosUpdateForm(view, prefijo_div);
+            }
             return false;
         });
+
     }
 
     function cargaClaveAjena(lugarID, lugarDesc, objetoClaveAjena) {
-        if ($(prefijo_div + lugarID).val() != "") {
+        if ($(prefijo_div + lugarID).val() != "" && $(prefijo_div + lugarID).val() != null) {
             objInfo = objeto(objetoClaveAjena, path).getOne($(prefijo_div + lugarID).val());
             props = Object.getOwnPropertyNames(objInfo);
             $(prefijo_div + lugarDesc).empty().html(objInfo[props[1]] + " " + objInfo[props[2]]);
