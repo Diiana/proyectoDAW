@@ -17,6 +17,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+                
         <style>
             body {
                 padding-top: 60px;
@@ -103,10 +104,7 @@
         <script src="js/util.js" charset="UTF-8"></script>
         <script src="js/main.js" charset="UTF-8"></script>
 
-        <script src="js/control/cliente.js" charset="UTF-8"></script>
-        <script src="js/control/producto.js" charset="UTF-8"></script>
-        <script src="js/control/tipoproducto.js" charset="UTF-8"></script>
-        <script src="js/control/compra.js" charset="UTF-8"></script>
+
 
         <script src="js/control/censo.js" charset="UTF-8"></script>
         <script src="js/control/comision.js" charset="UTF-8"></script>
